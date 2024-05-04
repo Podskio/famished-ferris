@@ -102,8 +102,15 @@ name = "famished-ferris"
 version = "0.1.0"
 dependencies = [
  "crossterm",
+ "fastrand",
  "ratatui",
 ]
+
+[[package]]
+name = "fastrand"
+version = "2.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9fc0510504f03c51ada170672ac806f1f105a88aa97a5281117e1ddc3368e51a"
 
 [[package]]
 name = "hashbrown"
