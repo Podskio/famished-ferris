@@ -144,10 +144,11 @@ pub fn render_game_board(state: &GameState, frame: &mut Frame) {
 
 fn get_hunger_bar(hunger: u8) -> String {
     match hunger {
-        1..=2 => "🟥".repeat(hunger as usize),
-        3..=4 => "🟨".repeat(hunger as usize),
-        _ => "🟩".repeat(hunger as usize),
+        1..=2 => "🟥",
+        3..=4 => "🟨",
+        _ => "🟩",
     }
+    .repeat(hunger as usize)
 }
 
 pub fn render_score_board(state: &GameState, frame: &mut Frame) {
