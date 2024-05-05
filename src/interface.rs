@@ -1,5 +1,5 @@
 use crate::{
-    game::{GameState, ENVIRONMENT_EMOJIS, FOOD_EMOJIS, PREDATOR_EMOJIS, TREASURE_EMOJIS},
+    game::{GameState, ENVIRONMENT_EMOJIS, FOOD_EMOJIS, PREDATOR_EMOJIS},
     GAME_SIZE,
 };
 use ratatui::{
@@ -58,10 +58,9 @@ pub fn render_start_screen(frame: &mut Frame) {
 
     frame.render_widget(
         Paragraph::new(format!(
-            "Food\n{}\n\nPredators\n{}\n\nTreasure\n{}\n\nEnvironment\n{}",
+            "Food\n{}\n\nPredators\n{}\n\nEnvironment\n{}",
             FOOD_EMOJIS.join(" "),
             PREDATOR_EMOJIS.join(" "),
-            TREASURE_EMOJIS.join(" "),
             ENVIRONMENT_EMOJIS.join(" ")
         ))
         .white()
@@ -103,7 +102,7 @@ pub fn render_start_screen(frame: &mut Frame) {
 }
 
 pub fn render_game_board(state: &GameState, frame: &mut Frame) {
-    let mut game_board = vec![vec!["🟫"; GAME_SIZE as usize]; GAME_SIZE as usize];
+    let mut game_board = vec![vec!["🟦"; GAME_SIZE as usize]; GAME_SIZE as usize];
 
     for obj in state.objects.iter() {
         game_board[obj.position.1 as usize][obj.position.0 as usize] = &obj.emoji;
@@ -132,7 +131,7 @@ pub fn render_game_board(state: &GameState, frame: &mut Frame) {
     frame.render_widget(
         Paragraph::new(game_board_str)
             .centered()
-            .bg(Color::Rgb(165, 105, 83)),
+            .bg(Color::Rgb(0, 166, 237)),
         Rect::new(
             frame.size().width / 2 - GAME_SIZE,
             9,
@@ -153,10 +152,10 @@ fn get_hunger_bar(hunger: u8) -> String {
 pub fn render_score_board(state: &GameState, frame: &mut Frame) {
     frame.render_widget(
         Paragraph::new(format!(
-            "💰 Treasure: {}\n💖 Health: {}\n😋 Hunger: {}",
-            state.treasure,
+            "💖 Health: {}\n😋 Hunger: {}\n⌛ Time: {}",
             "❤️".repeat(state.player.health as usize),
             get_hunger_bar(state.player.hunger),
+            format!("{:01}:{:02}", state.time / 10 / 60, state.time / 10 % 60)
         )),
         Rect::new(
             frame.size().width / 2 - 15,
@@ -175,8 +174,4 @@ pub fn render_score_board(state: &GameState, frame: &mut Frame) {
             frame.size().height,
         ),
     );
-}
-
-pub fn render_end_screen(_state: &GameState, _frame: &mut Frame) {
-    todo!();
 }
