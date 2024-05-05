@@ -153,7 +153,7 @@ fn get_hunger_bar(hunger: u8) -> String {
 pub fn render_score_board(state: &GameState, frame: &mut Frame) {
     frame.render_widget(
         Paragraph::new(format!(
-            "🪙 Treasure:  {}\n💖 Health: {}\n😋 Hunger: {}",
+            "💰 Treasure: {}\n💖 Health: {}\n😋 Hunger: {}",
             state.treasure,
             "❤️".repeat(state.player.health as usize),
             get_hunger_bar(state.player.hunger),
