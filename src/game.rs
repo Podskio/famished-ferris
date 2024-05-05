@@ -7,14 +7,11 @@ pub const FOOD_EMOJIS: [&str; 2] = ["🦐", "🪱"];
 pub const PREDATOR_EMOJIS: [&str; 5] = ["🪼", "🐙", "🦈", "🐢", "🚣"];
 pub const ENVIRONMENT_EMOJIS: [&str; 2] = ["🪸", "🐚"];
 
+#[rustfmt::skip]
 const OBJECT_VARIANTS: &[(ObjectVariant, f32, &[&str])] = &[
     (ObjectVariant::Food, 0.05, FOOD_EMOJIS.as_slice()),
     (ObjectVariant::Predator, 0.025, PREDATOR_EMOJIS.as_slice()),
-    (
-        ObjectVariant::Environment,
-        0.1,
-        ENVIRONMENT_EMOJIS.as_slice(),
-    ),
+    (ObjectVariant::Environment, 0.1, ENVIRONMENT_EMOJIS.as_slice()),
 ];
 
 #[derive(PartialEq, Clone, Copy)]
