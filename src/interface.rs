@@ -105,7 +105,7 @@ pub fn render_game_board(state: &GameState, frame: &mut Frame) {
     let mut game_board = vec![vec!["🟦"; GAME_SIZE as usize]; GAME_SIZE as usize];
 
     for obj in state.objects.iter() {
-        game_board[obj.position.1 as usize][obj.position.0 as usize] = &obj.emoji;
+        game_board[obj.position.1 as usize][obj.position.0 as usize] = obj.emoji;
     }
 
     game_board[state.player.position.1 as usize][state.player.position.0 as usize] = "🦀";
@@ -152,10 +152,11 @@ fn get_hunger_bar(hunger: u8) -> String {
 pub fn render_score_board(state: &GameState, frame: &mut Frame) {
     frame.render_widget(
         Paragraph::new(format!(
-            "💖 Health: {}\n😋 Hunger: {}\n⌛ Time: {}",
+            "💖 Health: {}\n😋 Hunger: {}\n⌛ Time: {:01}:{:02}",
             "❤️".repeat(state.player.health as usize),
             get_hunger_bar(state.player.hunger),
-            format!("{:01}:{:02}", state.time / 10 / 60, state.time / 10 % 60)
+            state.time / 600,
+            state.time / 10 % 60
         )),
         Rect::new(
             frame.size().width / 2 - 15,
@@ -169,7 +170,7 @@ pub fn render_score_board(state: &GameState, frame: &mut Frame) {
         Paragraph::new("(press q to quit)").centered().dark_gray(),
         Rect::new(
             0,
-            frame.size().height - 2,
+            frame.size().height - 1,
             frame.size().width,
             frame.size().height,
         ),

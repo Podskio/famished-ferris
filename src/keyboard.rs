@@ -10,7 +10,7 @@ pub fn handle_game_input(state: &mut GameState, key: KeyCode) {
             if state.player.position.1 > 0
                 && !environment_at_position(
                     (state.player.position.0, state.player.position.1 - 1),
-                    &state,
+                    state,
                 )
             {
                 state.player.position.1 -= 1;
@@ -20,7 +20,7 @@ pub fn handle_game_input(state: &mut GameState, key: KeyCode) {
             if state.player.position.1 < GAME_SIZE - 1
                 && !environment_at_position(
                     (state.player.position.0, state.player.position.1 + 1),
-                    &state,
+                    state,
                 )
             {
                 state.player.position.1 += 1;
@@ -30,7 +30,7 @@ pub fn handle_game_input(state: &mut GameState, key: KeyCode) {
             if state.player.position.0 > 0
                 && !environment_at_position(
                     (state.player.position.0 - 1, state.player.position.1),
-                    &state,
+                    state,
                 )
             {
                 state.player.position.0 -= 1;
@@ -40,7 +40,7 @@ pub fn handle_game_input(state: &mut GameState, key: KeyCode) {
             if state.player.position.0 < GAME_SIZE - 1
                 && !environment_at_position(
                     (state.player.position.0 + 1, state.player.position.1),
-                    &state,
+                    state,
                 )
             {
                 state.player.position.0 += 1;

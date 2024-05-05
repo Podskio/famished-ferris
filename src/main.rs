@@ -7,7 +7,7 @@ use interface::{
     render_end_screen, render_game_board, render_score_board, render_start_screen, render_title,
 };
 use keyboard::handle_game_input;
-use terminal::cleanup_terminal;
+use terminal::{cleanup_terminal, setup_terminal};
 
 mod game;
 mod interface;
@@ -21,10 +21,13 @@ pub const GAME_SIZE: u16 = 23;
 const INITIAL_HUNGER_RATE: u16 = 5 * 10;
 
 fn main() {
-    let mut terminal = terminal::setup_terminal();
+    let mut terminal = setup_terminal();
 
-    let mut state = GameState::default();
-    state.hunger_rate = INITIAL_HUNGER_RATE;
+    let mut state = GameState {
+        hunger_rate: INITIAL_HUNGER_RATE,
+        ..GameState::default()
+    };
+
     generate_objects(&mut state);
 
     // Start screen
@@ -87,9 +90,8 @@ fn main() {
 
                 handle_game_input(&mut state, key.code);
 
-                match get_object_in_position(state.player.position, &state) {
-                    Some(collision) => handle_object_collision(collision, &mut state),
-                    None => {}
+                if let Some(collision) = get_object_in_position(state.player.position, &state) {
+                    handle_object_collision(collision, &mut state);
                 }
             }
         }
