@@ -36,7 +36,6 @@ pub struct Player {
 pub enum EndReason {
     Starved,
     Died,
-    Won,
 }
 
 #[derive(Default)]
@@ -96,14 +95,6 @@ pub fn get_object_in_position(
     let object = state.objects.iter().find(|obj| obj.position == position)?;
 
     Some((index, object.variant))
-}
-
-pub fn get_num_food(state: &GameState) -> usize {
-    state
-        .objects
-        .iter()
-        .filter(|obj| obj.variant == ObjectVariant::Food)
-        .count()
 }
 
 pub fn environment_at_position(position: (u16, u16), state: &GameState) -> bool {

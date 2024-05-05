@@ -1,7 +1,6 @@
 use crossterm::event::{self, KeyCode, KeyEventKind};
 use game::{
-    generate_objects, get_num_food, get_object_in_position, handle_object_collision, EndReason,
-    GameState,
+    generate_objects, get_object_in_position, handle_object_collision, EndReason, GameState,
 };
 use interface::{
     render_end_screen, render_game_board, render_score_board, render_start_screen, render_title,
@@ -69,10 +68,6 @@ fn main() {
 
                 if state.player.health == 0 {
                     state.end_reason = Some(EndReason::Died);
-                }
-
-                if get_num_food(&state) == 0 {
-                    state.end_reason = Some(EndReason::Won);
                 }
             })
             .unwrap();
