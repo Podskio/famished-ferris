@@ -3,15 +3,13 @@ use crate::GAME_SIZE;
 const MAX_HEALTH: u8 = 5;
 const MAX_HUNGER: u8 = 10;
 
-pub const FOOD_EMOJIS: [&str; 3] = ["🦐", "🥬", "🪱"];
-pub const PREDATOR_EMOJIS: [&str; 7] = ["🐊", "🐬", "🪼", "🐙", "🦈", "🐢", "🚣‍♂️"];
-pub const TREASURE_EMOJIS: [&str; 2] = ["🪙", "💰"];
+pub const FOOD_EMOJIS: [&str; 2] = ["🦐", "🪱"];
+pub const PREDATOR_EMOJIS: [&str; 5] = ["🪼", "🐙", "🦈", "🐢", "🚣"];
 pub const ENVIRONMENT_EMOJIS: [&str; 2] = ["🪸", "🐚"];
 
 const OBJECT_VARIANTS: &[(ObjectVariant, f32, &[&str])] = &[
     (ObjectVariant::Food, 0.05, FOOD_EMOJIS.as_slice()),
     (ObjectVariant::Predator, 0.025, PREDATOR_EMOJIS.as_slice()),
-    (ObjectVariant::Treasure, 0.01, TREASURE_EMOJIS.as_slice()),
     (
         ObjectVariant::Environment,
         0.1,
@@ -23,7 +21,6 @@ const OBJECT_VARIANTS: &[(ObjectVariant, f32, &[&str])] = &[
 pub enum ObjectVariant {
     Food,
     Predator,
-    Treasure,
     Environment,
 }
 
@@ -49,7 +46,6 @@ pub enum EndReason {
 pub struct GameState {
     pub player: Player,
     pub time: u32,
-    pub treasure: u8,
     pub objects: Vec<Object>,
     pub end_reason: Option<EndReason>,
 }
@@ -93,7 +89,7 @@ pub fn generate_objects(state: &mut GameState) {
 pub fn get_object_in_position(
     position: (u16, u16),
     state: &GameState,
-) -> Option<(usize, &ObjectVariant)> {
+) -> Option<(usize, ObjectVariant)> {
     let index = state
         .objects
         .iter()
@@ -101,7 +97,7 @@ pub fn get_object_in_position(
 
     let object = state.objects.iter().find(|obj| obj.position == position)?;
 
-    Some((index, &object.variant))
+    Some((index, object.variant))
 }
 
 pub fn get_num_food(state: &GameState) -> usize {
@@ -117,4 +113,23 @@ pub fn environment_at_position(position: (u16, u16), state: &GameState) -> bool 
         .objects
         .iter()
         .any(|obj| obj.position == position && obj.variant == ObjectVariant::Environment)
+}
+
+pub fn handle_object_collision((i, variant): (usize, ObjectVariant), state: &mut GameState) {
+    match variant {
+        ObjectVariant::Food => {
+            state.player.hunger = (state.player.hunger + 1).min(MAX_HUNGER);
+            state.objects.remove(i);
+
+            state.objects.push(Object {
+                variant: ObjectVariant::Food,
+                position: get_empty_position(state),
+                emoji: fastrand::choice(FOOD_EMOJIS).unwrap(),
+            });
+        }
+        ObjectVariant::Predator => {
+            state.player.health = (state.player.health - 1).max(0);
+        }
+        ObjectVariant::Environment => {}
+    }
 }
