@@ -59,7 +59,7 @@ pub fn render_start_screen(frame: &mut Frame) {
 
     frame.render_widget(
         Paragraph::new(format!(
-            "Food\n{}\n\nPredators\n{}\n\nEnvironment\n{}",
+            "Player (you)\n🦀\n\nFood\n{}\n\nPredators\n{}\n\nEnvironment\n{}",
             FOOD_EMOJIS.join(" "),
             PREDATOR_EMOJIS.join(" "),
             ENVIRONMENT_EMOJIS.join(" ")
