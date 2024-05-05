@@ -6,7 +6,7 @@ use ratatui::{
     layout::{Alignment, Constraint, Direction, Layout, Rect},
     style::{Color, Style, Stylize},
     symbols,
-    widgets::{Block, Borders, Padding, Paragraph},
+    widgets::{Block, Borders, Padding, Paragraph, Wrap},
     Frame,
 };
 
@@ -26,7 +26,7 @@ pub fn render_start_screen(frame: &mut Frame) {
         .direction(Direction::Vertical)
         .constraints(vec![
             Constraint::Length(7),
-            Constraint::Percentage(40),
+            Constraint::Percentage(50),
             Constraint::Percentage(30),
         ])
         .split(frame.size());
@@ -43,7 +43,8 @@ pub fn render_start_screen(frame: &mut Frame) {
         .split(vert_layout[1]);
 
     frame.render_widget(
-        Paragraph::new("Welcome to Famished Ferris! 🦀\n\nThe goal of the game is to...")
+        Paragraph::new("Welcome to Famished Ferris! 🦀\n\nThe goal of the game is to survive for as long as possible.\n\n🔸 Collect food\n🔸 Avoid predators\n🔸 Navigate around the environment\n\nThe game ends when you run out of health or your hunger bar completely depletes. Your hunger will start decreasing slowly, but speed up with the amount of food you eat.")
+            .wrap(Wrap {trim: false})
             .white()
             .block(
                 Block::default()

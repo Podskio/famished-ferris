@@ -4,7 +4,7 @@ const MAX_HEALTH: u8 = 5;
 const MAX_HUNGER: u8 = 10;
 
 pub const FOOD_EMOJIS: [&str; 2] = ["🦐", "🪱"];
-pub const PREDATOR_EMOJIS: [&str; 5] = ["🪼", "🐙", "🦈", "🐢", "🚣"];
+pub const PREDATOR_EMOJIS: [&str; 4] = ["🪼", "🦈", "🐢", "🚣"];
 pub const ENVIRONMENT_EMOJIS: [&str; 2] = ["🪸", "🐚"];
 
 #[rustfmt::skip]
