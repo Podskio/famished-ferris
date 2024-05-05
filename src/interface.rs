@@ -1,5 +1,5 @@
 use crate::{
-    game::{GameState, ENVIRONMENT_EMOJIS, FOOD_EMOJIS, PREDATOR_EMOJIS},
+    game::{EndReason, GameState, ENVIRONMENT_EMOJIS, FOOD_EMOJIS, PREDATOR_EMOJIS},
     GAME_SIZE,
 };
 use ratatui::{
@@ -174,5 +174,55 @@ pub fn render_score_board(state: &GameState, frame: &mut Frame) {
             frame.size().width,
             frame.size().height,
         ),
+    );
+}
+
+pub fn render_end_screen(state: &GameState, frame: &mut Frame) {
+    let vert_layout = Layout::default()
+        .direction(Direction::Vertical)
+        .constraints(vec![
+            Constraint::Length(7),
+            Constraint::Percentage(30),
+            Constraint::Percentage(30),
+        ])
+        .split(frame.size());
+
+    let hor_layout = Layout::default()
+        .direction(Direction::Horizontal)
+        .constraints(vec![
+            Constraint::Percentage(30),
+            Constraint::Percentage(40),
+            Constraint::Percentage(30),
+        ])
+        .split(vert_layout[1]);
+
+    let end_reason_string = match state.end_reason.as_ref().unwrap() {
+        EndReason::Died => "You ran into too many predators!",
+        EndReason::Starved => "You got too hungry and passed away!",
+    };
+
+    frame.render_widget(
+        Paragraph::new(format!(
+            "{}\n\nYou survived for {:01}:{:02}\n\nBetter luck next time!",
+            end_reason_string,
+            state.time / 600,
+            state.time / 10 % 60
+        ))
+        .centered()
+        .white()
+        .block(
+            Block::default()
+                .borders(Borders::ALL)
+                .padding(Padding::proportional(1))
+                .title(" Game Over ")
+                .title_alignment(Alignment::Center)
+                .border_style(Style::new().light_red()),
+        ),
+        hor_layout[1],
+    );
+
+    frame.render_widget(
+        Paragraph::new("(press q to quit)").centered().dark_gray(),
+        vert_layout[2],
     );
 }
