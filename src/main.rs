@@ -14,12 +14,17 @@ mod interface;
 mod keyboard;
 mod terminal;
 
-pub const GAME_SIZE: u16 = 17;
+// Must be an odd number so the player can spawn in the center
+pub const GAME_SIZE: u16 = 23;
+
+// Start by decreasing hunger every 5 seconds
+const INITIAL_HUNGER_RATE: u16 = 5 * 10;
 
 fn main() {
     let mut terminal = terminal::setup_terminal();
 
     let mut state = GameState::default();
+    state.hunger_rate = INITIAL_HUNGER_RATE;
     generate_objects(&mut state);
 
     // Start screen
@@ -45,7 +50,7 @@ fn main() {
         state.time += 1;
 
         // Decrease hunger by 1 every 5 seconds
-        if state.time % 50 == 0 {
+        if state.time % state.hunger_rate == 0 {
             state.player.hunger -= 1;
         }
 

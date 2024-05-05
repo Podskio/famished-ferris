@@ -45,8 +45,9 @@ pub enum EndReason {
 #[derive(Default)]
 pub struct GameState {
     pub player: Player,
-    pub time: u32,
+    pub time: u16, // 1 unit = 0.1 seconds
     pub objects: Vec<Object>,
+    pub hunger_rate: u16,
     pub end_reason: Option<EndReason>,
 }
 
@@ -126,6 +127,8 @@ pub fn handle_object_collision((i, variant): (usize, ObjectVariant), state: &mut
                 position: get_empty_position(state),
                 emoji: fastrand::choice(FOOD_EMOJIS).unwrap(),
             });
+
+            state.hunger_rate = (state.hunger_rate - 1).max(1);
         }
         ObjectVariant::Predator => {
             state.player.health = (state.player.health - 1).max(0);
