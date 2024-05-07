@@ -117,7 +117,7 @@ pub fn render_game_board(state: &GameState, frame: &mut Frame) {
         .collect::<String>();
 
     frame.render_widget(
-        Block::new()
+        Block::default()
             .borders(Borders::ALL)
             .border_set(symbols::border::THICK)
             .border_style(Style::new().light_red()),
